@@ -1,0 +1,53 @@
+const { boolean } = require("joi");
+const sequelize = require("./config");
+
+const Vendor = sequelize.define('vendors',{
+   
+    service_pkg_id: {
+        type:Number,
+        required: true
+      },
+      company_name: {
+        type:String,
+        required: true
+      },
+      logo_image: {
+        type: String,
+        required: true,
+      },
+      mob_no: {
+        type:Number,
+        required: true
+      },
+      alt_mob_no: {
+        type:Number,
+        required: true
+      },
+      address: {
+        type:String,
+        required: true
+      },
+      pincode: {
+        type:Number,
+        required: true
+      },
+      location_id: {
+        type:Number,
+        required: true
+      },
+      is_active: {
+        type:boolean,
+      },
+      is_delete: {
+        type:boolean,
+      },
+
+      expiry_date: {
+        type:Date,
+      },
+});
+
+
+
+
+module.exports = Vendor;
