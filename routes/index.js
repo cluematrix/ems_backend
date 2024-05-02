@@ -2,6 +2,7 @@
 const express = require("express");
 
 const adminRoute = require("./admin.route");
+const vendorRoute = require("./vendor.route");
 const serviceRoute = require("./masters/service.route");
 const router = express.Router();
 
@@ -13,6 +14,10 @@ const defaultRoutes = [
     {
       path: "/service",
       route: serviceRoute,
+    },
+    {
+      path: "/vendor",
+      route: vendorRoute,
     }
 ]
 defaultRoutes.forEach((route) => {

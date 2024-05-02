@@ -16,6 +16,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', routes);
+console.log(__dirname);
+// app.use('/images',express.static(path.join(__dirname+"/public", 'images')));
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/'); // Destination folder for storing images
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname); // Keep original filename
+    }
+});
+const upload = multer({ storage: storage });
 
 app.listen(process.env.DEV_PORT, async () => {
     try {
