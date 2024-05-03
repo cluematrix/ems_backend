@@ -28,6 +28,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+app.use('/images', express.static('images'));
+
 app.listen(process.env.DEV_PORT, async () => {
     try {
         await connection;

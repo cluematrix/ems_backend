@@ -2,10 +2,17 @@ const { boolean } = require("joi");
 const sequelize = require("./config");
 
 const Vendor = sequelize.define('vendors',{
-   
+    service_id: {
+      type:Number,
+      required: true
+    },
     service_pkg_id: {
         type:Number,
         required: true
+      },
+      owner_name:{
+         type:String,
+         required:true,
       },
       company_name: {
         type:String,

@@ -8,7 +8,7 @@ const addVendor = async(req,res)=>{
         req.body.logo_image=image;
         const vendor=new Vendor(req.body);
         await vendor.save();
-        res.status(httpStatus.CREATED).json({msg:'Service Added Successfully',vendor:vendor});
+        res.status(httpStatus.CREATED).json({msg:'Vendor Added Successfully',vendor:vendor});
     }
     catch(error){
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ msg: 'Server error' });
