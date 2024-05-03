@@ -5,6 +5,7 @@ const connection = require("./config/config");
 const routes = require("./routes")
 const path = require('path');
 const app = express();
+const multer = require('multer');
 const corsOptions ={
     origin:'*',
     credentials:true, 
@@ -16,7 +17,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', routes);
-console.log(__dirname);
 // app.use('/images',express.static(path.join(__dirname+"/public", 'images')));
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
