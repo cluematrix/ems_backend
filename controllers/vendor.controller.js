@@ -4,10 +4,11 @@ const {  Vendor } = require('../models');
 
 const addVendor = async(req,res)=>{ 
     try{
-        console.log(req.body);
-        // const vendor=new Vendor(req.body);
-        // await vendor.save();
-        // res.status(httpStatus.CREATED).json({msg:'Service Added Successfully',vendor:vendor});
+        const image = req.file ? req.file.path : null;
+        req.body.logo_image=image;
+        const vendor=new Vendor(req.body);
+        await vendor.save();
+        res.status(httpStatus.CREATED).json({msg:'Service Added Successfully',vendor:vendor});
     }
     catch(error){
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ msg: 'Server error' });

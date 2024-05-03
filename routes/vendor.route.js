@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-VendorRouter.post('/',upload.single('image'),vendorController.addVendor);
+VendorRouter.post('/',upload.single('logo_image'),vendorController.addVendor);
 // VendorRouter.get('/',vendorController.getAllService);
 
 module.exports=VendorRouter;
