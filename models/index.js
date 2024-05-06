@@ -6,3 +6,4 @@ module.exports.Country = require("./masters/country.model");
 module.exports.City = require("./masters/city.model");
 module.exports.State = require("./masters/state.model");
 module.exports.Location = require("./masters/location.model");
+module.exports.Events = require("./event.model");
