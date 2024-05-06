@@ -42,6 +42,18 @@ const Vendor = sequelize.define('vendors',{
         type:Number,
         required: true
       },
+      country_id:{
+        type:Number,
+        required:true
+     },
+     state_id:{
+         type:Number,
+         required:true
+      },
+      city_id:{
+        type:Number,
+        required:true
+     },
       is_active: {
         type:boolean,
       },
@@ -50,7 +62,7 @@ const Vendor = sequelize.define('vendors',{
       },
 
       expiry_date: {
-        type:Date,
+        type:String,
       },
 });
 

@@ -28,10 +28,9 @@ const getAllService=async(req,res)=>{
 
 
 const getoneAllService=async(req,res)=>{
-    try{
-        
-     const service=await servicePackage.findAll({where:{is_delete:false,service_id:req.params.id}});
-     res.status(httpStatus.OK).json({ data: service });
+    try{  
+        const service=await servicePackage.findAll({where:{is_delete:false,service_id:req.params.id}});
+        res.status(httpStatus.OK).json({ data: service });
     }catch(error){
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
     }

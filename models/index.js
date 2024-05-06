@@ -2,3 +2,7 @@ module.exports.superAdmin = require("./admin.model");
 module.exports.Vendor = require("./vendor.model");
 module.exports.Service = require("./masters/service.model");
 module.exports.servicePackage = require("./masters/servicePackage.model");
+module.exports.Country = require("./masters/country.model");
+module.exports.City = require("./masters/city.model");
+module.exports.State = require("./masters/state.model");
+module.exports.Location = require("./masters/location.model");
