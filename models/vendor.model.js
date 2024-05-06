@@ -43,15 +43,15 @@ const Vendor = sequelize.define('vendors',{
         required: true
       },
       country_id:{
-        type:Number,
+        type:String,
         required:true
      },
      state_id:{
-         type:Number,
+         type:String,
          required:true
       },
       city_id:{
-        type:Number,
+        type:String,
         required:true
      },
       is_active: {
