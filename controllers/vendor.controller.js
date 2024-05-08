@@ -16,11 +16,12 @@ const addVendor = async(req,res)=>{
         const expiry_date = new Date(expdays);
         req.body.expiry_date=expiry_date.toISOString().split('T')[0];
         // console.log(expiry_date);
-        const vendor=await  Vendor.create(req.body);
+        const vendor=await Vendor.create(req.body);
         // await vendor.save();
         res.status(httpStatus.CREATED).json({msg:'Vendor Added Successfully',vendor:vendor});
     }
     catch(error){
+        console.error('Error saving vendor data:', error);
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ msg: 'Server error' });
     }
 }
