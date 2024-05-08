@@ -15,10 +15,10 @@ const addVendor = async(req,res)=>{
         const expdays = now.getTime() + spkg['validity_in_days'] * 24 * 60 * 60 * 1000;
         const expiry_date = new Date(expdays);
         req.body.expiry_date=expiry_date.toISOString().split('T')[0];
-        console.log(expiry_date);
-        const vendor=new Vendor(req.body);
-        await vendor.save();
-        res.status(httpStatus.CREATED).json({msg:'Vendor Added Successfully',vendor:req.body});
+        // console.log(expiry_date);
+        const vendor=await  Vendor.create(req.body);
+        // await vendor.save();
+        res.status(httpStatus.CREATED).json({msg:'Vendor Added Successfully',vendor:vendor});
     }
     catch(error){
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ msg: 'Server error' });
