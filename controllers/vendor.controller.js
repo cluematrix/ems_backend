@@ -17,7 +17,7 @@ const addVendor = async(req,res)=>{
         req.body.expiry_date=expiry_date;
         const vendor=new Vendor(req.body);
         await vendor.save();
-        res.status(httpStatus.CREATED).json({msg:'Vendor Added Successfully',vendor:vendor});
+        res.status(httpStatus.OK).json({msg:'Vendor Added Successfully',vendor:vendor});
     }
     catch(error){
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ msg: 'Server error' });
