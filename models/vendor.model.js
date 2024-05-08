@@ -21,7 +21,7 @@ const Vendor = sequelize.define('vendors',{
       
       logo_image: {
         type: String,
-        required: true,
+        // required: fa,
       },
       mob_no: {
         type:Number,
