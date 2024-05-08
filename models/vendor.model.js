@@ -10,14 +10,15 @@ const Vendor = sequelize.define('vendors',{
         type:Number,
         required: true
       },
-      owner_name:{
-         type:String,
-         required:true,
-      },
       company_name: {
         type:String,
         required: true
       },
+      owner_name:{
+         type:String,
+         required:true,
+      },
+      
       logo_image: {
         type: String,
         required: true,
@@ -62,7 +63,7 @@ const Vendor = sequelize.define('vendors',{
       },
 
       expiry_date: {
-        type:String,
+        type:Date,
       },
 });
 
