@@ -26,7 +26,16 @@ const addVendor = async(req,res)=>{
     }
 }
 
-
+const getVendor=async(req,res)=>{
+    try{
+        const spkg= await Vendor.findAll({where:{is_delete:false}});
+        res.status(httpStatus.OK).json({msg:'Vendor Fetch Successfully',vendor:spkg});
+    }catch(error){
+        console.error('Error saving vendor data:', error);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ msg: 'Server error' });
+    }
+}
 module.exports = {
-    addVendor
+    addVendor,
+    getVendor
 }

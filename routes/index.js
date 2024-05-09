@@ -6,6 +6,7 @@ const vendorRoute = require("./vendor.route");
 const serviceRoute = require("./masters/service.route");
 const locationRouter = require("./masters/location.route");
 const eventRouter = require("./event.route");
+const LoginRouter = require("./login.route");
 const router = express.Router();
 
 const defaultRoutes = [
@@ -28,6 +29,10 @@ const defaultRoutes = [
     {
       path: "/event",
       route: eventRouter,
+    },
+    {
+      path: "/login",
+      route: LoginRouter,
     }
 ]
 defaultRoutes.forEach((route) => {

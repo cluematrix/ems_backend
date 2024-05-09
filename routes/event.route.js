@@ -9,4 +9,6 @@ eventRouter.post('/addEvent',eventController.addEvent);
 
 eventRouter.post('/eventPackage',eventController.addEventPkg);
 
+eventRouter.get('/eventPackage',eventController.getAllEventPackage);
+
 module.exports=eventRouter;
