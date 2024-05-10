@@ -113,6 +113,7 @@ const addEventManage=async(req,res)=>{
    res.status(httpStatus.OK).json({ msg:"Added Successfully", data: data });
     }
   catch(error){
+    console.error('Error saving event pkg data:', error);
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
   }
 
