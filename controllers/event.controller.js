@@ -2,7 +2,7 @@ const httpStatus = require("http-status");
 require("dotenv").config();
 const {  Events } = require('../models');
 const {  eventPackage } = require('../models');
-
+const {  eventDate } = require('../models');
 
 const addEvent = async(req,res)=>{ 
     try{
@@ -23,6 +23,7 @@ const addEventPkg = async(req,res)=>{
         res.status(httpStatus.OK).json({msg:'Event Added Successfully',EventPackage:Eventpkg});
     }
     catch(error){
+        console.error('Error saving event pkg data:', error);
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ msg: 'Server error' });
     }
 }
