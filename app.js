@@ -6,12 +6,19 @@ const routes = require("./routes")
 const path = require('path');
 const app = express();
 const multer = require('multer');
+const bodyParser = require('body-parser');
 const corsOptions ={
     origin:'*',
     credentials:true, 
     optionSuccessStatus:200,
  }
 app.use(cors(corsOptions));
+// // for parsing application/json
+// app.use(bodyParser.urlencoded({ extended: true }));
+
+// // Parse JSON bodies (as sent by API clients)
+// app.use(bodyParser.json());
+ 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

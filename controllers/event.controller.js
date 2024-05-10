@@ -3,6 +3,8 @@ require("dotenv").config();
 const {  Events } = require('../models');
 const {  eventPackage } = require('../models');
 const {  eventDate } = require('../models');
+const {  Customer } = require('../models');
+const {  eventManagement } = require('../models');
 
 const addEvent = async(req,res)=>{ 
     try{
@@ -58,8 +60,65 @@ const getAllEventPackage=async(req,res)=>{
 }
 
 const addEventManage=async(req,res)=>{
-  
+    try{
+   console.log(req.body);
+   const customer={};  const eventmanageadd = {}; 
+   customer.vendor_id=req.body.vendor_id; 
+   customer.customer_name=req.body.customer_name; 
+   customer.dob=req.body.dob;
+   customer.anniversary_date=req.body.anniversary_date;
+   customer.mob_no=req.body.mob_no;
+   customer.address=req.body.address;
+   customer.pincode=req.body.pincode;
+   customer.country_id=req.body.country_id;
+   customer.state_id=req.body.state_id;
+   customer.city_id=req.body.city_id;
+   const customeradd=new Customer(customer);
+   await customeradd.save();  //customer add
+   const cust_id = customeradd.dataValues.id;
+   eventmanageadd.vendor_id=req.body.vendor_id;
+   eventmanageadd.event_pkg_id=req.body.event_pkg_id;
+   eventmanageadd.customer_id=cust_id;
+   eventmanageadd.description=req.body.description;
+   eventmanageadd.amount=req.body.amount;
+   eventmanageadd.discount=req.body.discount;
+   eventmanageadd.final_amount=req.body.final_amount;
+   eventmanageadd.advance_amount=req.body.advance_amount;
+   eventmanageadd.remaining_amount=req.body.remaining_amount;
+   eventmanageadd.event_address=req.body.event_address;
+   const evntmng=new eventManagement(eventmanageadd);
+   await evntmng.save();  // Event_management
+   const event_manage_id = evntmng.dataValues.id;
+   const evdates = req.body.event_dates;
+   console.log(evdates);
+
+
+  const svv=[];
+    // Proceed with using map
+   await Promise.all(evdates.map(async (obj) => {
+        const edate = {};
+         edate.event_manage_id=event_manage_id;
+         edate.from_date=obj.from_date;
+         edate.to_date=obj.to_date;
+         edate.from_time=obj.from_time;
+         edate.to_time=obj.to_time;
+         const evntime=new eventDate(edate);
+         await evntime.save();  // Event_management
+         svv.push(evntime);
+   }));
+   const data={};
+   data.customerdata=customeradd;
+   data.eventdata=evntmng;
+   data.event_dates=svv;
+   res.status(httpStatus.OK).json({ msg:"Added Successfully", data: data });
+    }
+  catch(error){
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
+  }
+
 }
+
+
 
 module.exports = {
     addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage

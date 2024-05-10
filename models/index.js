@@ -9,3 +9,5 @@ module.exports.Location = require("./masters/location.model");
 module.exports.Events = require("./event.model");
 module.exports.eventPackage = require("./eventPackage.model");
 module.exports.eventDate = require("./eventDate.model");
+module.exports.Customer = require("./customer.model");
+module.exports.eventManagement = require("./eventManagement.model");
