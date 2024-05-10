@@ -68,6 +68,7 @@ const addEventManage=async(req,res)=>{
    customer.dob=req.body.dob;
    customer.anniversary_date=req.body.anniversary_date;
    customer.mob_no=req.body.mob_no;
+   customer.alt_mob_no=req.body.alt_mob_no;
    customer.address=req.body.address;
    customer.pincode=req.body.pincode;
    customer.country_id=req.body.country_id;
