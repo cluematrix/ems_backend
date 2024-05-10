@@ -13,6 +13,8 @@ eventRouter.get('/eventPackage',eventController.getAllEventPackage);
 
 eventRouter.post('/eventadd',eventController.addEventManage);
 
+eventRouter.post('/geteventofCust',eventController.geteventofCust);
+
 
 
 module.exports=eventRouter;

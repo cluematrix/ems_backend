@@ -120,8 +120,29 @@ const addEventManage=async(req,res)=>{
 
 }
 
-
+const geteventofCust= async(req,res)=>{
+    try{
+   const vendor_id=2;
+   const evnt=await eventManagement.findAll({where:{is_delete:false,vendor_id:vendor_id}});
+    await Promise.all(evnt.map(async (obj) => {
+        // Split event_id to get event ids
+        const cust_id=obj.customer_id;
+        const event_manage_id=obj.id;
+        // console.log(event_manage_id);
+        // Fetch events for each event id
+        const customer = await Customer.findAll({ where: { id: cust_id } });
+        const event_dates = await eventDate.findAll({ where: { event_manage_id: event_manage_id } });
+        // // Add a new key 'newKey' to dataValues property with the fetched events
+        obj.dataValues.customerdata = customer;
+        obj.dataValues.event_dates = event_dates;
+    }));
+    res.status(httpStatus.OK).json({ data: evnt });
+}catch(error){
+    console.error('Error saving event pkg data:', error);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
+}
+}
 
 module.exports = {
-    addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage
+    addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust
 }
