@@ -61,7 +61,7 @@ const getAllEventPackage=async(req,res)=>{
 
 const addEventManage=async(req,res)=>{
     try{
-   console.log(req.body);
+  
    const customer={};  const eventmanageadd = {}; 
    customer.vendor_id=req.body.vendor_id; 
    customer.customer_name=req.body.customer_name; 
@@ -91,10 +91,8 @@ const addEventManage=async(req,res)=>{
    await evntmng.save();  // Event_management
    const event_manage_id = evntmng.dataValues.id;
    const evdates = req.body.event_dates;
-   console.log(evdates);
 
-
-  const svv=[];
+  const event_data_array=[];
     // Proceed with using map
    await Promise.all(evdates.map(async (obj) => {
         const edate = {};
@@ -103,14 +101,15 @@ const addEventManage=async(req,res)=>{
          edate.to_date=obj.to_date;
          edate.from_time=obj.from_time;
          edate.to_time=obj.to_time;
+         edate.remark=obj.remark;
          const evntime=new eventDate(edate);
          await evntime.save();  // Event_management
-         svv.push(evntime);
+         event_data_array.push(evntime);
    }));
    const data={};
    data.customerdata=customeradd;
    data.eventdata=evntmng;
-   data.event_dates=svv;
+   data.event_dates=event_data_array;
    res.status(httpStatus.OK).json({ msg:"Added Successfully", data: data });
     }
   catch(error){
