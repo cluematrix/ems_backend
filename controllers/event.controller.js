@@ -110,6 +110,7 @@ const addEventManage=async(req,res)=>{
    eventpay.amount=req.body.amount;
    eventpay.discount=req.body.discount;
    eventpay.final_amount=req.body.final_amount;
+   eventpay.paid_amount=req.body.advance_amount;
    eventpay.advance_amount=req.body.advance_amount;
    eventpay.remaining_amount=req.body.remaining_amount;
    const eventpaynew=new eventPayment(eventpay);
@@ -167,8 +168,18 @@ const geteventDates =async(req,res)=>{
 
 }
 
+const getLastPayment = async(req,res)=>{
+    try{
+        const lastpay = await eventPayment.findAll({where:{is_delete:false,event_manage_id:req.params.id},
+            order: [['id', 'DESC']],limit: 1});
+        res.status(httpStatus.OK).json({data:lastpay});
 
+    }catch(error){
+        console.log('getting error-------------'+error);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
+    }
+}
 
 module.exports = {
-    addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust,geteventDates
+    addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust,geteventDates,getLastPayment
 }
