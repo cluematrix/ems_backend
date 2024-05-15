@@ -223,7 +223,7 @@ const Makepayment = async(req,res)=>{
     try{
         const Event=new eventPayment(req.body);
         await Event.save();
-        res.status(httpStatus.OK).json({msg:'Event Added Successfully',Event:Event});
+        res.status(httpStatus.OK).json({msg:'Payment Added Successfully',Event:Event});
     }catch(error)
     {
         console.log('error--------'+error);
