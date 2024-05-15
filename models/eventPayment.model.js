@@ -26,6 +26,10 @@ const eventPayment = sequelize.define('event_payments',{
         type:String,
         required:true
     },
+    paid_date:{
+        type:Date,
+        required:true
+    },
     remaining_amount:{
         type:String,
         required:true

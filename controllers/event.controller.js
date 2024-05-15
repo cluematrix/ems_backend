@@ -113,6 +113,8 @@ const addEventManage=async(req,res)=>{
    eventpay.paid_amount=req.body.advance_amount;
    eventpay.advance_amount=req.body.advance_amount;
    eventpay.remaining_amount=req.body.remaining_amount;
+   var cdate = (new Date()).toISOString().split('T')[0];
+   eventpay.paid_date=cdate;
    const eventpaynew=new eventPayment(eventpay);
    await eventpaynew.save();  // Event_management
 
@@ -144,10 +146,12 @@ const geteventofCust= async(req,res)=>{
         const customer = await Customer.findAll({ where: { id: cust_id } });
         const event_dates = await eventDate.findAll({ where: { event_manage_id: event_manage_id } });
         const event_pkg = await eventPackage.findAll({ where: { id: event_pkg_id } });
+        const event_payment = await eventPayment.findAll({ where: { event_manage_id: event_manage_id } });
         // // Add a new key 'newKey' to dataValues property with the fetched events
         obj.dataValues.customerdata = customer;
         obj.dataValues.event_dates = event_dates;
         obj.dataValues.event_pkg = event_pkg;
+        obj.dataValues.event_payment = event_payment;
     }));
     res.status(httpStatus.OK).json({ data: evnt });
 }catch(error){
@@ -171,7 +175,7 @@ const geteventDates =async(req,res)=>{
 const getLastPayment = async(req,res)=>{
     try{
         const lastpay = await eventPayment.findAll({where:{is_delete:false,event_manage_id:req.params.id},
-            order: [['id', 'DESC']],limit: 1});
+            order: [['id', 'DESC']]});
         res.status(httpStatus.OK).json({data:lastpay});
 
     }catch(error){
@@ -180,6 +184,42 @@ const getLastPayment = async(req,res)=>{
     }
 }
 
+const geteventbydate = async(req,res)=>{
+    try{
+        const getalldate = await eventDate.findAll({where:{is_delete:false,from_date:req.params.id},
+           group:['event_manage_id']});
+              const alldatewise = [];
+           await Promise.all(getalldate.map(async (obj) => {
+            // Split event_id to get event ids
+            const event_manage_id=obj.event_manage_id;
+            // Fetch events for each event id
+            const eventdata=await eventManagement.findOne({where:{is_delete:false,id:event_manage_id}});
+            const cust_id=eventdata.dataValues.customer_id;
+            const event_pkg_id=eventdata.dataValues.event_pkg_id;
+            const customer = await Customer.findAll({ where: { id: cust_id } });
+            const event_dates = await eventDate.findAll({ where: { event_manage_id: event_manage_id } });
+            const event_pkg = await eventPackage.findAll({ where: { id: event_pkg_id } });
+            const event_payment = await eventPayment.findAll({ where: { event_manage_id: event_manage_id } });
+            // // Add a new key 'newKey' to dataValues property with the fetched events
+            obj=eventdata;
+            obj.dataValues.customerdata = customer;
+            obj.dataValues.event_dates = event_dates;
+            obj.dataValues.event_pkg = event_pkg;
+            obj.dataValues.event_payment = event_payment;
+            alldatewise.push(obj)
+        }));
+        res.status(httpStatus.OK).json({data:alldatewise});
+
+    }catch(error){
+        console.log('getting error-------------'+error);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
+    }
+}
+
+
+
+
 module.exports = {
-    addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust,geteventDates,getLastPayment
+    addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust,
+    geteventDates,getLastPayment,geteventbydate
 }

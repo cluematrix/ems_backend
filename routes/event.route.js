@@ -19,5 +19,6 @@ eventRouter.get('/geteventDates',eventController.geteventDates);
 
 eventRouter.get('/getLastPayment/:id',eventController.getLastPayment);
 
+eventRouter.get('/geteventbydate/:id',eventController.geteventbydate);
 
 module.exports=eventRouter;
