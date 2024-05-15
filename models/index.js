@@ -11,3 +11,5 @@ module.exports.eventPackage = require("./eventPackage.model");
 module.exports.eventDate = require("./eventDate.model");
 module.exports.Customer = require("./customer.model");
 module.exports.eventManagement = require("./eventManagement.model");
+module.exports.Expense = require("./expense.model");
+module.exports.eventPayment = require("./eventPayment.model");

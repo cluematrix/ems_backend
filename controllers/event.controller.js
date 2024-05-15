@@ -5,7 +5,7 @@ const {  eventPackage } = require('../models');
 const {  eventDate } = require('../models');
 const {  Customer } = require('../models');
 const {  eventManagement } = require('../models');
-
+const {  eventPayment } = require('../models');
 const addEvent = async(req,res)=>{ 
     try{
         const Event=new Events(req.body);
@@ -61,8 +61,7 @@ const getAllEventPackage=async(req,res)=>{
 
 const addEventManage=async(req,res)=>{
     try{
-  
-   const customer={};  const eventmanageadd = {}; 
+   const customer={};  const eventmanageadd = {}; const eventpay = {}; 
    customer.vendor_id=req.body.vendor_id; 
    customer.customer_name=req.body.customer_name; 
    customer.dob=req.body.dob;
@@ -106,10 +105,21 @@ const addEventManage=async(req,res)=>{
          await evntime.save();  // Event_management
          event_data_array.push(evntime);
    }));
+  
+   eventpay.event_manage_id=event_manage_id;
+   eventpay.amount=req.body.amount;
+   eventpay.discount=req.body.discount;
+   eventpay.final_amount=req.body.final_amount;
+   eventpay.advance_amount=req.body.advance_amount;
+   eventpay.remaining_amount=req.body.remaining_amount;
+   const eventpaynew=new eventPayment(eventpay);
+   await eventpaynew.save();  // Event_management
+
    const data={};
    data.customerdata=customeradd;
    data.eventdata=evntmng;
    data.event_dates=event_data_array;
+   data.event_payment=eventpay;
    res.status(httpStatus.OK).json({ msg:"Added Successfully", data: data });
     }
   catch(error){

@@ -1,25 +1,29 @@
 const { boolean } = require("joi");
 const sequelize = require("./config");
 
-const Expense = sequelize.define('expenses',{
-    vendor_id:{
+const eventPayment = sequelize.define('event_payments',{
+    event_manage_id:{
         type:Number,
         required:true
     },
-    expense_name:{
+    amount:{
         type:String,
         required:true
     },
-    description:{
+    discount:{
         type:String,
         required:true
     },
-    expense_to_whom:{
+    final_amount:{
        type:String,
        required:true
     },
-    employee_id:{
-        type:Number,
+    advance_amount:{
+        type:String,
+        required:true
+    },
+    remaining_amount:{
+        type:String,
         required:true
     },
     is_active:{
@@ -32,4 +36,4 @@ const Expense = sequelize.define('expenses',{
       },
 });
 
-module.exports=Expense;
+module.exports=eventPayment;
