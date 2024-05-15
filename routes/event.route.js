@@ -15,6 +15,7 @@ eventRouter.post('/eventadd',eventController.addEventManage);
 
 eventRouter.get('/geteventofCust',eventController.geteventofCust);
 
+eventRouter.get('/geteventDates',eventController.geteventDates);
 
 
 module.exports=eventRouter;

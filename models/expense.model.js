@@ -1,3 +1,34 @@
 const sequelize = require("./config");
 
-// const 
+const Expense = sequelize.define('expenses',{
+    vendor_id:{
+        type:Number,
+        required:true
+    },
+    expense_name:{
+        type:String,
+        required:true
+    },
+    description:{
+        type:String,
+        required:true
+    },
+    expense_to_whom:{
+       type:String,
+       required:true
+    },
+    employee_id:{
+        type:Number,
+        required:true
+    },
+    is_active:{
+        type:boolean,
+        required:true
+      },
+      is_delete:{
+        type:boolean,
+        required:true
+      },
+});
+
+module.exports=Expense;

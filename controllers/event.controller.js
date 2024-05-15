@@ -127,13 +127,16 @@ const geteventofCust= async(req,res)=>{
         // Split event_id to get event ids
         const cust_id=obj.customer_id;
         const event_manage_id=obj.id;
+        const event_pkg_id=obj.event_pkg_id;
         // console.log(event_manage_id);
         // Fetch events for each event id
         const customer = await Customer.findAll({ where: { id: cust_id } });
         const event_dates = await eventDate.findAll({ where: { event_manage_id: event_manage_id } });
+        const event_pkg = await eventPackage.findAll({ where: { id: event_pkg_id } });
         // // Add a new key 'newKey' to dataValues property with the fetched events
         obj.dataValues.customerdata = customer;
         obj.dataValues.event_dates = event_dates;
+        obj.dataValues.event_pkg = event_pkg;
     }));
     res.status(httpStatus.OK).json({ data: evnt });
 }catch(error){
@@ -142,6 +145,20 @@ const geteventofCust= async(req,res)=>{
 }
 }
 
+
+const geteventDates =async(req,res)=>{
+
+    try{
+        const evnt=await eventDate.findAll({where:{is_delete:false}});
+        res.status(httpStatus.OK).json({ data: evnt });
+       }catch(error){
+           res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
+       }
+
+}
+
+
+
 module.exports = {
-    addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust
+    addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust,geteventDates
 }
