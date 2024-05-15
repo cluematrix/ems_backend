@@ -6,6 +6,8 @@ const {  eventDate } = require('../models');
 const {  Customer } = require('../models');
 const {  eventManagement } = require('../models');
 const {  eventPayment } = require('../models');
+
+
 const addEvent = async(req,res)=>{ 
     try{
         const Event=new Events(req.body);
@@ -217,9 +219,21 @@ const geteventbydate = async(req,res)=>{
 }
 
 
+const Makepayment = async(req,res)=>{
+    try{
+        const Event=new eventPayment(req.body);
+        await Event.save();
+        res.status(httpStatus.OK).json({msg:'Event Added Successfully',Event:Event});
+    }catch(error)
+    {
+        console.log('error--------'+error);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'Internal sserver error'});
+    }
+}
+
 
 
 module.exports = {
     addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust,
-    geteventDates,getLastPayment,geteventbydate
+    geteventDates,getLastPayment,geteventbydate,Makepayment
 }
