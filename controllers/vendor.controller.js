@@ -42,14 +42,14 @@ const loginVendor = async(req,res)=>{
         (admin.is_active == false) ? res.status(httpStatus.FORBIDDEN).json({ error: 'Your account is deactive' }) : '';
         console.log('44444-----'+admin);
         const isPasswordValid = await bcrypt.compare(password, admin.password);
-        (!isPasswordValid) ? res.status(httpStatus.BAD_REQUEST).json({ msg: 'Invalid email or password' }) : '';
+        (!isPasswordValid) ? res.status(httpStatus.BAD_REQUEST).json({ msg: 'Invalid email or password2' }) : '';
         console.log('55555-----'+admin);
         const token = jwt.sign({ adminId: admin.id }, 'Bearar');
         // await admin.save();
         if(admin){ 
         res.status(httpStatus.OK).json({ msg: `Welcome ${admin.company_name}`, token: token, data:admin })
     }else{
-        res.status(httpStatus.BAD_REQUEST).json({ msg: 'Invalid email or password' });}
+        res.status(httpStatus.BAD_REQUEST).json({ msg: 'Invalid email or password3' });}
        }catch(error){
          res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'sertver error'});
        }
