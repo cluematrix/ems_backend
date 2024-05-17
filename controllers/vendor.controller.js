@@ -46,7 +46,10 @@ const loginVendor = async(req,res)=>{
         console.log('55555-----'+admin);
         const token = jwt.sign({ adminId: admin.id }, 'Bearar');
         // await admin.save();
-        (admin) ? res.status(httpStatus.OK).json({ msg: `Welcome ${admin.company_name}`, token: token, data:admin }):res.status(httpStatus.BAD_REQUEST).json({ msg: 'Invalid email or password' });
+        if(admin){ 
+        res.status(httpStatus.OK).json({ msg: `Welcome ${admin.company_name}`, token: token, data:admin })
+    }else{
+        res.status(httpStatus.BAD_REQUEST).json({ msg: 'Invalid email or password' });}
        }catch(error){
          res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'sertver error'});
        }
