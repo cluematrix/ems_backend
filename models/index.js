@@ -13,3 +13,4 @@ module.exports.Customer = require("./customer.model");
 module.exports.eventManagement = require("./eventManagement.model");
 module.exports.Expense = require("./expense.model");
 module.exports.eventPayment = require("./eventPayment.model");
+module.exports.employee = require("./employee.model");

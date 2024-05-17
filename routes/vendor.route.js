@@ -18,6 +18,7 @@ const upload = multer({ storage: storage });
 
 
 // ......................
+VendorRouter.post('/login',upload.single('logo_image'),vendorController.loginVendor);
 VendorRouter.post('/',upload.single('logo_image'),vendorController.addVendor);
 VendorRouter.get('/',vendorController.getVendor);
 
