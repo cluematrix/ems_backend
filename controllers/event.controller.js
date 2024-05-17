@@ -191,6 +191,7 @@ const geteventbydate = async(req,res)=>{
         const getalldate = await eventDate.findAll({where:{is_delete:false,from_date:req.params.id},
            group:['event_manage_id']});
               const alldatewise = [];
+              console.log(getalldate);
            await Promise.all(getalldate.map(async (obj) => {
             // Split event_id to get event ids
             const event_manage_id=obj.event_manage_id;
