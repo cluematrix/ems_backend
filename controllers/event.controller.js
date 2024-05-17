@@ -19,7 +19,6 @@ const addEvent = async(req,res)=>{
     }
 }
 
-
 const addEventPkg = async(req,res)=>{ 
     try{
         const Eventpkg=new eventPackage(req.body);
@@ -162,7 +161,6 @@ const geteventofCust= async(req,res)=>{
 }
 }
 
-
 const geteventDates =async(req,res)=>{
 
     try{
@@ -219,7 +217,6 @@ const geteventbydate = async(req,res)=>{
     }
 }
 
-
 const Makepayment = async(req,res)=>{
     try{
         const Event=new eventPayment(req.body);
@@ -236,9 +233,36 @@ const Makepayment = async(req,res)=>{
     }
 }
 
+const getCustomerEvents= async(req,res)=>{
+    try{
+   const customer_id=req.params.id;
+   const evnt=await eventManagement.findAll({where:{is_delete:false,customer_id:customer_id}});
+    await Promise.all(evnt.map(async (obj) => {
+        // Split event_id to get event ids
+        const event_manage_id=obj.id;
+        const event_pkg_id=obj.event_pkg_id;
+        // console.log(event_manage_id);
+        // Fetch events for each event id
+        const customer = await Customer.findAll({ where: { id: customer_id } });
+        const event_dates = await eventDate.findAll({ where: { event_manage_id: event_manage_id } });
+        const event_pkg = await eventPackage.findAll({ where: { id: event_pkg_id } });
+        const event_payment = await eventPayment.findAll({ where: { event_manage_id: event_manage_id } });
+        // // Add a new key 'newKey' to dataValues property with the fetched events
+        obj.dataValues.customerdata = customer;
+        obj.dataValues.event_dates = event_dates;
+        obj.dataValues.event_pkg = event_pkg;
+        obj.dataValues.event_payment = event_payment;
+    }));
+    res.status(httpStatus.OK).json({ data: evnt });
+}catch(error){
+    console.error('Error saving event pkg data:', error);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
+}
+}
+
 
 
 module.exports = {
     addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust,
-    geteventDates,getLastPayment,geteventbydate,Makepayment
+    geteventDates,getLastPayment,geteventbydate,Makepayment,getCustomerEvents
 }
