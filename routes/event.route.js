@@ -13,7 +13,7 @@ eventRouter.get('/eventPackage',eventController.getAllEventPackage);
 
 eventRouter.post('/eventadd',eventController.addEventManage);
 
-eventRouter.get('/geteventofCust',eventController.geteventofCust);
+eventRouter.get('/geteventofCust/:id',eventController.geteventofCust);
 
 eventRouter.get('/geteventDates',eventController.geteventDates);
 

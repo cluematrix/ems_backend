@@ -135,7 +135,7 @@ const addEventManage=async(req,res)=>{
 
 const geteventofCust= async(req,res)=>{
     try{
-   const vendor_id=2;
+   const vendor_id=req.params.id;
    const evnt=await eventManagement.findAll({where:{is_delete:false,vendor_id:vendor_id}});
     await Promise.all(evnt.map(async (obj) => {
         // Split event_id to get event ids

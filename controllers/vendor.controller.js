@@ -34,18 +34,18 @@ const loginVendor = async(req,res)=>{
     try {
         const { mobile_no, password } = req.body;
         const admin = await Vendor.findOne({ mob_no: mobile_no });
-        // console.log(admin);
+         console.log('11111-----'+admin);
        (admin.mob_no!=mobile_no) ? res.status(httpStatus.BAD_REQUEST).json({ msg: 'Invalid email or password' }):'';
-        
+       console.log('222222222-----'+admin);
         (admin.is_delete == true) ? res.status(httpStatus.FORBIDDEN).json({ error: 'Your account is deleted' }) : '';
-       
+        console.log('333333-----'+admin);
         (admin.is_active == false) ? res.status(httpStatus.FORBIDDEN).json({ error: 'Your account is deactive' }) : '';
-    
+        console.log('44444-----'+admin);
         const isPasswordValid = await bcrypt.compare(password, admin.password);
-        (!isPasswordValid) ?res.status(httpStatus.BAD_REQUEST).json({ msg: 'Invalid email or password' }) : '';
-        
+        (!isPasswordValid) ? res.status(httpStatus.BAD_REQUEST).json({ msg: 'Invalid email or password' }) : '';
+        console.log('55555-----'+admin);
         const token = jwt.sign({ adminId: admin.id }, 'Bearar');
-        await admin.save();
+        // await admin.save();
         (admin) ? res.status(httpStatus.OK).json({ msg: `Welcome ${admin.company_name}`, token: token, data:admin }):res.status(httpStatus.BAD_REQUEST).json({ msg: 'Invalid email or password' });
        }catch(error){
          res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'sertver error'});
