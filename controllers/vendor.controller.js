@@ -35,16 +35,16 @@ const loginVendor = async(req,res)=>{
         const { mobile_no, password } = req.body;
         console.log(req.body)
         const admin = await Vendor.findOne({ mob_no: mobile_no });
-         console.log('11111-----'+admin);
+        //  console.log('11111-----'+admin);
     //    (admin.mob_no!=mobile_no) ? res.status(httpStatus.BAD_REQUEST).json({ msg: 'Invalid email or password' }):'';
     //    console.log('222222222-----'+admin);
         (admin.is_delete == true) ? res.status(httpStatus.FORBIDDEN).json({ error: 'Your account is deleted' }) : '';
-        console.log('333333-----'+admin);
+        // console.log('333333-----'+admin);
         (admin.is_active == false) ? res.status(httpStatus.FORBIDDEN).json({ error: 'Your account is deactive' }) : '';
-        console.log('44444-----'+admin);
+        // console.log('44444-----'+admin);
         const isPasswordValid = await bcrypt.compare(password, admin.password);
         (!isPasswordValid) ? res.status(httpStatus.BAD_REQUEST).json({ msg: 'Invalid email or password2' }) : '';
-        console.log('55555-----'+admin);
+        // console.log('55555-----'+admin);
         const token = jwt.sign({ adminId: admin.id }, 'Bearar');
         // await admin.save();
         if(admin){ 
