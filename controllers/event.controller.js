@@ -223,6 +223,10 @@ const Makepayment = async(req,res)=>{
     try{
         const Event=new eventPayment(req.body);
         await Event.save();
+        // const evntup = await eventManagement.findByIdAndUpdate({ id: req.body.event_manage_id }, req.body, { new: true });
+          
+        const eve = await eventManagement.update({remaining_amount:req.body.remaining_amount} ,{where:{id:req.body.event_manage_id}})
+
         res.status(httpStatus.OK).json({msg:'Payment Added Successfully',Event:Event});
     }catch(error)
     {
