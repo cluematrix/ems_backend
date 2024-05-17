@@ -23,6 +23,6 @@ eventRouter.get('/geteventbydate/:id',eventController.geteventbydate);
 
 eventRouter.post('/Makepayment',eventController.Makepayment);
 
-eventRouter.get('/getCustomerEvents/:id',eventController.Makepayment);
+eventRouter.get('/getCustomerEvents/:id',eventController.getCustomerEvents);
 
 module.exports=eventRouter;
