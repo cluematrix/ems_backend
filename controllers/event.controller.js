@@ -188,7 +188,7 @@ const getLastPayment = async(req,res)=>{
 
 const geteventbydate = async(req,res)=>{
     try{
-        const getalldate = await eventDate.findAll({where:{is_delete:false,from_date:req.params.id},
+        const getalldate = await eventDate.findAll({attributes:['event_dates.*'],where:{is_delete:false,from_date:req.params.id},
            group:['event_manage_id']});
               const alldatewise = [];
            await Promise.all(getalldate.map(async (obj) => {
