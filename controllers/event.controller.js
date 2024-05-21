@@ -261,7 +261,7 @@ const getCustomerEvents= async(req,res)=>{
 
 const updatePaymentPdfUrl=async(req,res)=>{
     try{
-    const eve = await eventPayment.update({pdf_url:req.body.pdf_url} ,{where:{id:req.body.event_pay_id}})
+    const eve = await eventPayment.update({pdf_url:req.body.pdf_url,pdf_name:req.boy.pdf_name} ,{where:{id:req.body.event_pay_id}})
     res.status(httpStatus.OK).json({ data: eve });
    }catch(error){
     console.error('Error saving event pkg data:', error);
