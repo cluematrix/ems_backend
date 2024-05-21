@@ -34,6 +34,10 @@ const eventPayment = sequelize.define('event_payments',{
         type:String,
         required:true
     },
+    pdf_url:{
+        type:String,
+        required:true
+    },
     is_active:{
         type:boolean,
         required:true
