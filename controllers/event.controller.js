@@ -186,7 +186,7 @@ const getLastPayment = async(req,res)=>{
 const geteventbydate = async(req,res)=>{
     try{
         const getalldate = await eventDate.findAll({where:{is_delete:false,from_date:req.params.id},
-           group:['event_dates.event_manage_id']});
+           group:['event_manage_id']});
               const alldatewise = [];
             //   console.log(getalldate);
            await Promise.all(getalldate.map(async (obj) => {
@@ -270,10 +270,19 @@ const updatePaymentPdfUrl=async(req,res)=>{
 }
 
 const TransferEvent=async(req,res)=>{
+    try{
+
+        const customeradd=new transferEvent(req.body);
+        await customeradd.save();  //customer add
+        res.status(httpStatus.OK).json({msg:'Event Transfer Successfully',Transfer:customeradd});
+    }catch(error)
+    {
+        res.send(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
+    }
     
 }
 
 module.exports = {
     addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust,
-    geteventDates,getLastPayment,geteventbydate,Makepayment,getCustomerEvents,updatePaymentPdfUrl
+    geteventDates,getLastPayment,geteventbydate,Makepayment,getCustomerEvents,updatePaymentPdfUrl,TransferEvent
 }
