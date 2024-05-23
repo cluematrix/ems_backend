@@ -6,7 +6,7 @@ const {  eventDate } = require('../models');
 const {  Customer } = require('../models');
 const {  eventManagement } = require('../models');
 const {  eventPayment } = require('../models');
-
+const {  transferEvent } = require('../models');
 
 const addEvent = async(req,res)=>{ 
     try{
@@ -185,7 +185,7 @@ const getLastPayment = async(req,res)=>{
 
 const geteventbydate = async(req,res)=>{
     try{
-        const getalldate = await eventDate.findAll({where:{is_delete:false,from_date:req.params.id},
+        const getalldate = await eventDate.findAll({where:{is_delete:false,from_date:req.params.id},attributes:['event_dates.*'],
            group:['event_manage_id']});
               const alldatewise = [];
             //   console.log(getalldate);
@@ -269,6 +269,9 @@ const updatePaymentPdfUrl=async(req,res)=>{
    }
 }
 
+const TransferEvent=async(req,res)=>{
+    
+}
 
 module.exports = {
     addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust,
