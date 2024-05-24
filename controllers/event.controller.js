@@ -314,6 +314,7 @@ const Exposing=async(req,res)=>{
                 const event_payment = await eventPayment.findAll({ where: { event_manage_id: event_manage_id } });
                 const exposedfrom = await Vendor.findOne({ where: { id: obj.vendor_from } });
                 const exposedto = await Vendor.findOne({ where: { id: obj.vendor_to } });
+                const transfer_evnt = await transferEvent.findOne({ where: { id: obj.id } });
                 // // Add a new key 'newKey' to dataValues property with the fetched events
                 obj=eventdata;
                 obj.dataValues.customerdata = customer;
@@ -322,6 +323,7 @@ const Exposing=async(req,res)=>{
                 obj.dataValues.event_payment = event_payment;
                 obj.dataValues.exposed_from = exposedfrom;
                 obj.dataValues.exposed_to = exposedto;
+                obj.dataValues.transfer_event = transfer_evnt;
                 alldatewise.push(obj)
             }
             }));
@@ -357,6 +359,7 @@ const ExposedTo=async(req,res)=>{
              const event_payment = await eventPayment.findAll({ where: { event_manage_id: event_manage_id } });
              const exposedfrom = await Vendor.findOne({ where: { id: obj.vendor_from } });
              const exposedto = await Vendor.findOne({ where: { id: obj.vendor_to } });
+             const transfer_evnt = await transferEvent.findOne({ where: { id: obj.id } });
              // // Add a new key 'newKey' to dataValues property with the fetched events
              obj=eventdata;
              obj.dataValues.customerdata = customer;
@@ -365,6 +368,7 @@ const ExposedTo=async(req,res)=>{
              obj.dataValues.event_payment = event_payment;
              obj.dataValues.exposed_from = exposedfrom;
              obj.dataValues.exposed_to = exposedto;
+             obj.dataValues.transfer_event = transfer_evnt;
              alldatewise.push(obj);
          }
          }));
