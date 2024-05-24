@@ -29,7 +29,8 @@ eventRouter.post('/updatePaymentUrl',eventController.updatePaymentPdfUrl);
 
 eventRouter.post('/TransferEvent',eventController.TransferEvent);
 
-eventRouter.get('/TransferEventTo/:id',eventController.TransferEventTo);
+eventRouter.get('/Exposing/:id',eventController.Exposing);
 
+eventRouter.get('/ExposedTo/:id',eventController.ExposedTo);
 
 module.exports=eventRouter;

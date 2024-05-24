@@ -3,6 +3,7 @@ require("dotenv").config();
 const {  Events } = require('../models');
 const {  eventPackage } = require('../models');
 const {  eventDate } = require('../models');
+const {  Vendor } = require('../models');
 const {  Customer } = require('../models');
 const {  eventManagement } = require('../models');
 const {  eventPayment } = require('../models');
@@ -33,7 +34,6 @@ const addEventPkg = async(req,res)=>{
 
 const getAllEvent=async(req,res)=>{
     try{
-        console.log('ddd');
      const evnt=await Events.findAll({where:{is_delete:false}});
      res.status(httpStatus.OK).json({ data: evnt });
     }catch(error){
@@ -126,11 +126,10 @@ const addEventManage=async(req,res)=>{
    data.event_payment=eventpay;
    res.status(httpStatus.OK).json({ msg:"Added Successfully", data: data });
     }
-  catch(error){
-    console.error('Error saving event pkg data:', error);
-    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
-  }
-
+    catch(error){
+        console.error('Error saving event pkg data:', error);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
+    }
 }
 
 const geteventofCust= async(req,res)=>{
@@ -297,20 +296,94 @@ const TransferEvent=async(req,res)=>{
     
 }
 
-const TransferEventTo=async(req,res)=>{
+const Exposing=async(req,res)=>{
     try{
-
-        const customeradd=new transferEvent(req.body);
-        await customeradd.save();  //customer add
-        res.status(httpStatus.OK).json({msg:'Event Transfer Successfully',Transfer:customeradd});
-    }catch(error)
-    {
+           const trnsf=await transferEvent.findAll({where:{is_delete:false,vendor_from:req.params.id}});
+            const alldatewise = [];
+            await Promise.all(trnsf.map(async (obj) => {
+                // Split event_id to get event ids
+                const event_manage_id=obj.event_manage_id;
+                // Fetch events for each event id
+                const eventdata=await eventManagement.findOne({where:{is_delete:false,id:event_manage_id,vendor_id:req.params.id}});
+                if(eventdata){
+                const cust_id=eventdata.dataValues.customer_id;
+                const event_pkg_id=eventdata.dataValues.event_pkg_id;
+                const customer = await Customer.findAll({ where: { id: cust_id } });
+                const event_dates = await eventDate.findAll({ where: { event_manage_id: event_manage_id } });
+                const event_pkg = await eventPackage.findAll({ where: { id: event_pkg_id } });
+                const event_payment = await eventPayment.findAll({ where: { event_manage_id: event_manage_id } });
+                const exposedfrom = await Vendor.findOne({ where: { id: obj.vendor_from } });
+                const exposedto = await Vendor.findOne({ where: { id: obj.vendor_to } });
+                // // Add a new key 'newKey' to dataValues property with the fetched events
+                obj=eventdata;
+                obj.dataValues.customerdata = customer;
+                obj.dataValues.event_dates = event_dates;
+                obj.dataValues.event_pkg = event_pkg;
+                obj.dataValues.event_payment = event_payment;
+                obj.dataValues.exposed_from = exposedfrom;
+                obj.dataValues.exposed_to = exposedto;
+                alldatewise.push(obj)
+            }
+            }));
+            if(alldatewise.length!=0){
+            res.status(httpStatus.OK).json({data:alldatewise});
+            }else
+            {
+                res.status(httpStatus.OK).json({msg:"No Data Found",data:[]});
+            }
+    }
+    catch(error)
+    {  
+        console.log('getting error--'+error);
         res.send(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
     }
-    
 }
+
+const ExposedTo=async(req,res)=>{
+    try{
+        const trnsf=await transferEvent.findAll({where:{is_delete:false,vendor_to:req.params.id}});
+         const alldatewise = [];
+         await Promise.all(trnsf.map(async (obj) => {
+             // Split event_id to get event ids
+             const event_manage_id=obj.event_manage_id;
+             // Fetch events for each event id
+             const eventdata=await eventManagement.findOne({where:{is_delete:false,id:event_manage_id,vendor_id:obj.vendor_from}});
+             if(eventdata){
+             const cust_id=eventdata.dataValues.customer_id;
+             const event_pkg_id=eventdata.dataValues.event_pkg_id;
+             const customer = await Customer.findAll({ where: { id: cust_id } });
+             const event_dates = await eventDate.findAll({ where: { event_manage_id: event_manage_id } });
+             const event_pkg = await eventPackage.findAll({ where: { id: event_pkg_id } });
+             const event_payment = await eventPayment.findAll({ where: { event_manage_id: event_manage_id } });
+             const exposedfrom = await Vendor.findOne({ where: { id: obj.vendor_from } });
+             const exposedto = await Vendor.findOne({ where: { id: obj.vendor_to } });
+             // // Add a new key 'newKey' to dataValues property with the fetched events
+             obj=eventdata;
+             obj.dataValues.customerdata = customer;
+             obj.dataValues.event_dates = event_dates;
+             obj.dataValues.event_pkg = event_pkg;
+             obj.dataValues.event_payment = event_payment;
+             obj.dataValues.exposed_from = exposedfrom;
+             obj.dataValues.exposed_to = exposedto;
+             alldatewise.push(obj);
+         }
+         }));
+         if(alldatewise.length!=0){
+         res.status(httpStatus.OK).json({data:alldatewise});
+         }else
+         {
+             res.status(httpStatus.OK).json({msg:"No Data Found",data:[]});
+         }
+ }
+ catch(error)
+ {  
+     console.log('getting error--'+error);
+     res.send(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
+ }
+}
+
 
 module.exports = {
     addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust,
-    geteventDates,getLastPayment,geteventbydate,Makepayment,getCustomerEvents,updatePaymentPdfUrl,TransferEvent,TransferEventTo
+    geteventDates,getLastPayment,geteventbydate,Makepayment,getCustomerEvents,updatePaymentPdfUrl,TransferEvent,Exposing,ExposedTo
 }
