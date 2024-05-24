@@ -163,9 +163,16 @@ const geteventofCust= async(req,res)=>{
 const geteventDates =async(req,res)=>{
 
     try{
-        const evnt=await eventDate.findAll({where:{is_delete:false}});
+        const evnt=await eventDate.findAll({where:{is_delete:false} ,  include: [{
+            model: eventManagement, // The model to join
+            required: true, // Inner join, use `false` for left join
+            where: {
+                vendor_id: req.params.id // Condition on eventManagement table
+              }
+          }]});
         res.status(httpStatus.OK).json({ data: evnt });
        }catch(error){
+        console.log('gettting error---'+error);
            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
        }
 
@@ -185,7 +192,7 @@ const getLastPayment = async(req,res)=>{
 
 const geteventbydate = async(req,res)=>{
     try{
-        const getalldate = await eventDate.findAll({where:{is_delete:false,from_date:req.params.id},
+        const getalldate = await eventDate.findAll({where:{is_delete:false,from_date:req.params.date},
            group:['event_manage_id']});
               const alldatewise = [];
             //   console.log(getalldate);
@@ -193,7 +200,8 @@ const geteventbydate = async(req,res)=>{
             // Split event_id to get event ids
             const event_manage_id=obj.event_manage_id;
             // Fetch events for each event id
-            const eventdata=await eventManagement.findOne({where:{is_delete:false,id:event_manage_id}});
+            const eventdata=await eventManagement.findOne({where:{is_delete:false,id:event_manage_id,vendor_id:req.params.id}});
+            if(eventdata){
             const cust_id=eventdata.dataValues.customer_id;
             const event_pkg_id=eventdata.dataValues.event_pkg_id;
             const customer = await Customer.findAll({ where: { id: cust_id } });
@@ -207,8 +215,15 @@ const geteventbydate = async(req,res)=>{
             obj.dataValues.event_pkg = event_pkg;
             obj.dataValues.event_payment = event_payment;
             alldatewise.push(obj)
+           }
         }));
-        res.status(httpStatus.OK).json({data:alldatewise});
+
+        if(alldatewise.length!=0){
+          res.status(httpStatus.OK).json({data:alldatewise});
+        }else
+        {
+            res.status(httpStatus.OK).json({msg:"No Data Found",data:[]});
+        }
 
     }catch(error){
         console.log('getting error-------------'+error);
@@ -282,7 +297,20 @@ const TransferEvent=async(req,res)=>{
     
 }
 
+const TransferEventTo=async(req,res)=>{
+    try{
+
+        const customeradd=new transferEvent(req.body);
+        await customeradd.save();  //customer add
+        res.status(httpStatus.OK).json({msg:'Event Transfer Successfully',Transfer:customeradd});
+    }catch(error)
+    {
+        res.send(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
+    }
+    
+}
+
 module.exports = {
     addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust,
-    geteventDates,getLastPayment,geteventbydate,Makepayment,getCustomerEvents,updatePaymentPdfUrl,TransferEvent
+    geteventDates,getLastPayment,geteventbydate,Makepayment,getCustomerEvents,updatePaymentPdfUrl,TransferEvent,TransferEventTo
 }

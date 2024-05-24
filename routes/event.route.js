@@ -15,11 +15,11 @@ eventRouter.post('/eventadd',eventController.addEventManage);
 
 eventRouter.get('/geteventofCust/:id',eventController.geteventofCust);
 
-eventRouter.get('/geteventDates',eventController.geteventDates);
+eventRouter.get('/geteventDates/:id',eventController.geteventDates);
 
 eventRouter.get('/getLastPayment/:id',eventController.getLastPayment);
 
-eventRouter.get('/geteventbydate/:id',eventController.geteventbydate);
+eventRouter.get('/geteventbydate/:date/:id',eventController.geteventbydate);
 
 eventRouter.post('/Makepayment',eventController.Makepayment);
 
@@ -28,5 +28,8 @@ eventRouter.get('/getCustomerEvents/:id',eventController.getCustomerEvents);
 eventRouter.post('/updatePaymentUrl',eventController.updatePaymentPdfUrl);
 
 eventRouter.post('/TransferEvent',eventController.TransferEvent);
+
+eventRouter.get('/TransferEventTo/:id',eventController.TransferEventTo);
+
 
 module.exports=eventRouter;
