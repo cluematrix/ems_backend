@@ -145,7 +145,9 @@ const geteventofCust= async(req,res)=>{
             const event_dates = await eventDate.findAll({ where: { event_manage_id: event_manage_id } });
             const event_pkg = await eventPackage.findAll({ where: { id: event_pkg_id } });
             const event_payment = await eventPayment.findAll({ where: { event_manage_id: event_manage_id } });
+            const trnsf=await transferEvent.findOne({where:{event_manage_id:event_manage_id,vendor_from:vendor_id}});
             // // Add a new key 'newKey' to dataValues property with the fetched events
+            if(trnsf.length>0){ obj.dataValues.transfer = 1; }else{obj.dataValues.transfer = 0;}
             obj.dataValues.customerdata = customer;
             obj.dataValues.event_dates = event_dates;
             obj.dataValues.event_pkg = event_pkg;
