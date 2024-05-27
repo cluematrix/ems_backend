@@ -34,7 +34,7 @@ const addEventPkg = async(req,res)=>{
 
 const getAllEvent=async(req,res)=>{
     try{
-     const evnt=await Events.findAll({where:{is_delete:false}});
+     const evnt=await Events.findAll({where:{is_delete:false,vendor_id:req.params.id}});
      res.status(httpStatus.OK).json({ data: evnt });
     }catch(error){
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
@@ -43,11 +43,10 @@ const getAllEvent=async(req,res)=>{
 
 const getAllEventPackage=async(req,res)=>{
     try{
-     const evnt=await eventPackage.findAll({where:{is_delete:false}});
+     const evnt=await eventPackage.findAll({where:{is_delete:false,vendor_id:req.params.id}});
      await Promise.all(evnt.map(async (obj) => {
         // Split event_id to get event ids
         const evntid = obj.event_id.split('#');
-        console.log(evntid);
         // Fetch events for each event id
         const evnts = await Events.findAll({ where: { id: evntid } });
         // Add a new key 'newKey' to dataValues property with the fetched events

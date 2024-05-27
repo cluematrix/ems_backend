@@ -2,7 +2,11 @@ const { boolean } = require('joi');
 const sequelize = require('./config');
 
 const eventPackage = sequelize.define('event_packages',{
-    event_id:{
+  event_id:{
+    type:Number,
+    required:true
+  },
+  vendor_id:{
     type:Number,
     required:true
   },
