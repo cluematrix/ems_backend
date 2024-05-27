@@ -227,7 +227,9 @@ const geteventbydate = async(req,res)=>{
             const event_dates = await eventDate.findAll({ where: { event_manage_id: event_manage_id } });
             const event_pkg = await eventPackage.findAll({ where: { id: event_pkg_id } });
             const event_payment = await eventPayment.findAll({ where: { event_manage_id: event_manage_id } });
+            const trnsf=await transferEvent.findOne({where:{event_manage_id:event_manage_id,vendor_from:req.params.id}});
             // // Add a new key 'newKey' to dataValues property with the fetched events
+            if(trnsf){ obj.dataValues.transfer = 1; }else{obj.dataValues.transfer = 0;}
             obj=eventdata;
             obj.dataValues.customerdata = customer;
             obj.dataValues.event_dates = event_dates;
