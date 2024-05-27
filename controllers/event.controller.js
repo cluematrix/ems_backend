@@ -161,21 +161,30 @@ const geteventofCust= async(req,res)=>{
 }
 
 const geteventDates =async(req,res)=>{
-
     try{
-        const evnt=await eventDate.findAll({where:{is_delete:false} ,  include: [{
+        var evnt=await eventDate.findAll({where:{is_delete:false} ,  include: [{
             model: eventManagement, // The model to join
             required: true, // Inner join, use `false` for left join
             where: {
                 vendor_id: req.params.id // Condition on eventManagement table
               }
           }]});
+
+       
+          var tft=await transferEvent.findAll({where:{is_delete:false,vendor_to:req.params.id } ,  include: [{
+            model: eventManagement, // The model to join
+            required: true, // Inner join, use `false` for left join
+            
+          }]});
+          if(evnt.length>0 && tft.length>0){evnt=evnt.concat(tft);}
+          if(evnt.length==0 && tft.length>0){evnt=tft;}
+
+
         res.status(httpStatus.OK).json({ data: evnt });
        }catch(error){
         console.log('gettting error---'+error);
            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
        }
-
 }
 
 const getLastPayment = async(req,res)=>{

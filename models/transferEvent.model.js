@@ -1,6 +1,6 @@
 const { boolean } = require('joi');
 const sequelize = require('./config');
-
+const  eventManagement  = require('./eventManagement.model');
 const transferEvent = sequelize.define('transfer_events',{
   event_manage_id:{
     type:Number,
@@ -31,5 +31,5 @@ const transferEvent = sequelize.define('transfer_events',{
     required:true
   },
 });
-
+transferEvent.belongsTo(eventManagement, { foreignKey: 'event_manage_id' });
 module.exports=transferEvent;
