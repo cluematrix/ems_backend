@@ -15,7 +15,7 @@ const addExpense = async(req,res)=>{
     try{
         const Event=new Expense(req.body);
         await Event.save();
-        res.status(httpStatus.OK).json({msg:'Expense Added Successfully',Event:Expense});
+        res.status(httpStatus.OK).json({msg:'Expense Added Successfully',expense:Event});
     }
     catch(error){
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ msg: 'Server error' });

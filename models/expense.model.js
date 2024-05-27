@@ -30,6 +30,14 @@ const Expense = sequelize.define('expenses',{
         type:Number,
         required:true
     },
+    remaining_amount:{
+        type:String,
+        required:true
+    },
+    amount:{
+        type:String,
+        required:true
+    },
     is_active:{
         type:boolean,
         required:true

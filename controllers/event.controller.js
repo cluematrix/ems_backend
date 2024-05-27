@@ -411,7 +411,7 @@ const ExposedTo=async(req,res)=>{
 
 const getVendorList=async(req,res)=>{
     try{
-        const trnsf=await transferEvent.findAll({where:{is_delete:false,vendor_to:req.params.id}});
+        const trnsf=await transferEvent.findAll({where:{is_delete:false,vendor_from:req.params.id}});
          const alldatewise = [];
          await Promise.all(trnsf.map(async (obj) => {
              // Split event_id to get event ids
