@@ -170,14 +170,19 @@ const geteventDates =async(req,res)=>{
               }
           }]});
 
-       
-          var tft=await transferEvent.findAll({where:{is_delete:false,vendor_to:req.params.id } ,  include: [{
-            model: eventManagement, // The model to join
-            required: true, // Inner join, use `false` for left join
-            
-          }]});
-          if(evnt.length>0 && tft.length>0){evnt=evnt.concat(tft);}
-          if(evnt.length==0 && tft.length>0){evnt=tft;}
+          var nvct=[];
+          const tft=await transferEvent.findAll({where:{is_delete:false,vendor_to:req.params.id}});
+          await Promise.all(tft.map(async (obj) => {
+                nvct=await eventDate.findAll({where:{is_delete:false,event_manage_id:obj.event_manage_id} ,  include: [{
+                    model: eventManagement, // The model to join
+                    required: true, // Inner join, use `false` for left join
+                    where: {
+                        vendor_id: obj.vendor_from // Condition on eventManagement table
+                    }
+                }]});
+          }));
+          if(evnt.length>0 && nvct.length>0){evnt=evnt.concat(nvct);}
+          if(evnt.length==0 && nvct.length>0){evnt=nvct;}
 
 
         res.status(httpStatus.OK).json({ data: evnt });
