@@ -229,14 +229,13 @@ const geteventbydate = async(req,res)=>{
             const event_payment = await eventPayment.findAll({ where: { event_manage_id: event_manage_id } });
             const trnsf=await transferEvent.findOne({where:{event_manage_id:event_manage_id,vendor_from:req.params.id}});
             // // Add a new key 'newKey' to dataValues property with the fetched events
-            
             obj=eventdata;
             obj.dataValues.customerdata = customer;
             obj.dataValues.event_dates = event_dates;
             obj.dataValues.event_pkg = event_pkg;
             if(trnsf){ obj.dataValues.transfer = 1; }else{obj.dataValues.transfer = 0;}
             obj.dataValues.event_payment = event_payment;
-            alldatewise.push(obj)
+            alldatewise.push(obj);
            }
         }));
 
@@ -410,7 +409,53 @@ const ExposedTo=async(req,res)=>{
 }
 
 
+const getVendorList=async(req,res)=>{
+    try{
+        const trnsf=await transferEvent.findAll({where:{is_delete:false,vendor_to:req.params.id}});
+         const alldatewise = [];
+         await Promise.all(trnsf.map(async (obj) => {
+             // Split event_id to get event ids
+             const event_manage_id=obj.event_manage_id;
+             // Fetch events for each event id
+             const eventdata=await eventManagement.findOne({where:{is_delete:false,id:event_manage_id,vendor_id:obj.vendor_from}});
+             if(eventdata){
+             const cust_id=eventdata.dataValues.customer_id;
+             const event_pkg_id=eventdata.dataValues.event_pkg_id;
+             const customer = await Customer.findAll({ where: { id: cust_id } });
+             const event_dates = await eventDate.findAll({ where: { event_manage_id: event_manage_id } });
+             const event_pkg = await eventPackage.findAll({ where: { id: event_pkg_id } });
+             const event_payment = await eventPayment.findAll({ where: { event_manage_id: event_manage_id } });
+             const exposedfrom = await Vendor.findOne({ where: { id: obj.vendor_from } });
+             const exposedto = await Vendor.findOne({ where: { id: obj.vendor_to } });
+             const transfer_evnt = await transferEvent.findOne({ where: { id: obj.id } });
+             // // Add a new key 'newKey' to dataValues property with the fetched events
+             obj=eventdata;
+             obj.dataValues.customerdata = customer;
+             obj.dataValues.event_dates = event_dates;
+             obj.dataValues.event_pkg = event_pkg;
+             obj.dataValues.event_payment = event_payment;
+             obj.dataValues.exposed_from = exposedfrom;
+             obj.dataValues.exposed_to = exposedto;
+             obj.dataValues.transfer_event = transfer_evnt;
+             alldatewise.push(obj);
+         }
+         }));
+         if(alldatewise.length!=0){
+         res.status(httpStatus.OK).json({data:alldatewise});
+         }else
+         {
+             res.status(httpStatus.OK).json({msg:"No Data Found",data:[]});
+         }
+ }
+ catch(error)
+ {  
+     console.log('getting error--'+error);
+     res.send(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
+ }
+}
+
 module.exports = {
     addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust,
-    geteventDates,getLastPayment,geteventbydate,Makepayment,getCustomerEvents,updatePaymentPdfUrl,TransferEvent,Exposing,ExposedTo
+    geteventDates,getLastPayment,geteventbydate,Makepayment,getCustomerEvents,updatePaymentPdfUrl, 
+    TransferEvent,Exposing,ExposedTo,getVendorList
 }

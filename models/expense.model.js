@@ -18,6 +18,14 @@ const Expense = sequelize.define('expenses',{
        type:String,
        required:true
     },
+    expense_to_vendor:{
+        type:String,
+        required:true
+     },
+     event_manage_id:{
+        type:String,
+        required:true
+     },
     employee_id:{
         type:Number,
         required:true
