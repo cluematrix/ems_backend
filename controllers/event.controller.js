@@ -169,7 +169,9 @@ const geteventDates =async(req,res)=>{
                 vendor_id: req.params.id // Condition on eventManagement table
               }
           }]});
-
+          await Promise.all(evnt.map(async (objss) => {
+            objss.dataValues.transfer = 0;
+          }));
           var nvct=[];
           const tft=await transferEvent.findAll({where:{is_delete:false,vendor_to:req.params.id}});
           await Promise.all(tft.map(async (obj) => {
@@ -180,6 +182,9 @@ const geteventDates =async(req,res)=>{
                         vendor_id: obj.vendor_from // Condition on eventManagement table
                     }
                 }]});
+          }));
+          await Promise.all(nvct.map(async (objs) => {
+            objs.dataValues.transfer = 1;
           }));
           if(evnt.length>0 && nvct.length>0){evnt=evnt.concat(nvct);}
           if(evnt.length==0 && nvct.length>0){evnt=nvct;}
