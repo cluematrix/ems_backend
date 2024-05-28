@@ -8,6 +8,7 @@ const {  Customer } = require('../models');
 const {  eventManagement } = require('../models');
 const {  eventPayment } = require('../models');
 const {  transferEvent } = require('../models');
+const {  Expense } = require('../models');
 
 const addEvent = async(req,res)=>{ 
     try{
@@ -337,6 +338,7 @@ const Exposing=async(req,res)=>{
                 const exposedfrom = await Vendor.findOne({ where: { id: obj.vendor_from } });
                 const exposedto = await Vendor.findOne({ where: { id: obj.vendor_to } });
                 const transfer_evnt = await transferEvent.findOne({ where: { id: obj.id } });
+                const expense_payment = await Expense.findAll({ where: { event_manage_id: event_manage_id,vendor_id:obj.vendor_from,expense_to_vendor:obj.vendor_to } });
                 // // Add a new key 'newKey' to dataValues property with the fetched events
                 obj=eventdata;
                 obj.dataValues.customerdata = customer;
@@ -346,6 +348,7 @@ const Exposing=async(req,res)=>{
                 obj.dataValues.exposed_from = exposedfrom;
                 obj.dataValues.exposed_to = exposedto;
                 obj.dataValues.transfer_event = transfer_evnt;
+                obj.dataValues.expense_payment = expense_payment;
                 alldatewise.push(obj)
             }
             }));
@@ -382,6 +385,7 @@ const ExposedTo=async(req,res)=>{
              const exposedfrom = await Vendor.findOne({ where: { id: obj.vendor_from } });
              const exposedto = await Vendor.findOne({ where: { id: obj.vendor_to } });
              const transfer_evnt = await transferEvent.findOne({ where: { id: obj.id } });
+             const expense_payment = await Expense.findAll({ where: { event_manage_id: event_manage_id,vendor_id:obj.vendor_from,expense_to_vendor:obj.vendor_to } });
              // // Add a new key 'newKey' to dataValues property with the fetched events
              obj=eventdata;
              obj.dataValues.customerdata = customer;
@@ -391,6 +395,7 @@ const ExposedTo=async(req,res)=>{
              obj.dataValues.exposed_from = exposedfrom;
              obj.dataValues.exposed_to = exposedto;
              obj.dataValues.transfer_event = transfer_evnt;
+             obj.dataValues.expense_payment = expense_payment;
              alldatewise.push(obj);
          }
          }));
