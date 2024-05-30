@@ -503,6 +503,9 @@ const Getexpense=async(req,res)=>{
         res.send(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
      }
 }
+
+// const getAlltotal
+
 module.exports = {
     addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust,
     geteventDates,getLastPayment,geteventbydate,Makepayment,getCustomerEvents,updatePaymentPdfUrl, 

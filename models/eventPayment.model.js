@@ -6,6 +6,10 @@ const eventPayment = sequelize.define('event_payments',{
         type:Number,
         required:true
     },
+    vendor_id:{
+        type:Number,
+        required:true
+    },
     amount:{
         type:String,
         required:true
