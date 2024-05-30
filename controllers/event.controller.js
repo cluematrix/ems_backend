@@ -369,8 +369,8 @@ const Exposing=async(req,res)=>{
 const ExposedTo=async(req,res)=>{
     try{
         const trnsf=await transferEvent.findAll({where:{is_delete:false,vendor_to:req.params.id}});
-         const alldatewise = [];
-         await Promise.all(trnsf.map(async (obj) => {
+        const alldatewise = [];
+        await Promise.all(trnsf.map(async (obj) => {
              // Split event_id to get event ids
              const event_manage_id=obj.event_manage_id;
              // Fetch events for each event id
@@ -461,8 +461,39 @@ const getVendorList=async(req,res)=>{
  }
 }
 
+const Getexpense=async(req,res)=>{
+     try{
+        const expense_payment = await Expense.findAll({ where: { vendor_id:req.vendor_id} });
+        const alldatewise = [];
+        await Promise.all(expense_payment.map(async (obj) => {
+             // Split event_id to get event ids
+             const event_manage_id=obj.event_manage_id;
+             // Fetch events for each event id
+             const eventdata=await eventManagement.findOne({where:{is_delete:false,id:event_manage_id,vendor_id:obj.vendor_id}});
+             if(eventdata){
+             const cust_id=eventdata.dataValues.customer_id;
+             const customer = await Customer.findAll({ where: { id: cust_id } });
+             const expense_payment = await Expense.findAll({ where: { id:obj.id }});
+             // // Add a new key 'newKey' to dataValues property with the fetched events
+             obj=eventdata;
+             obj.dataValues.customerdata = customer;
+             obj.dataValues.expense_payment = expense_payment;
+             alldatewise.push(obj);
+         }
+         }));
+         if(alldatewise.length!=0){
+            res.status(httpStatus.OK).json({data:alldatewise});
+         }else
+         {
+            res.status(httpStatus.OK).json({msg:"No Data Found",data:[]});
+         }
+     }catch(error){
+        console.log('error-------'+error);
+        res.send(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
+     }
+}
 module.exports = {
     addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust,
     geteventDates,getLastPayment,geteventbydate,Makepayment,getCustomerEvents,updatePaymentPdfUrl, 
-    TransferEvent,Exposing,ExposedTo,getVendorList
+    TransferEvent,Exposing,ExposedTo,getVendorList,Getexpense
 }
