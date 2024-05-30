@@ -35,4 +35,7 @@ eventRouter.get('/ExposedTo/:id',eventController.ExposedTo);
 
 eventRouter.get('/getVendorList/:id',eventController.getVendorList);
 
+eventRouter.get('/Getexpense/:id/:type',eventController.Getexpense);
+
+
 module.exports=eventRouter;

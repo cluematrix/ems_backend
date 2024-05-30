@@ -463,7 +463,18 @@ const getVendorList=async(req,res)=>{
 
 const Getexpense=async(req,res)=>{
      try{
-        const expense_payment = await Expense.findAll({ where: { vendor_id:req.vendor_id} });
+       var vendor_id=req.params.id;
+       console.log(vendor_id);
+       console.log(req.params.type);
+        if(req.params.type=='emp'){
+            const expense_to_vendor=0;
+            var expense_payment = await Expense.findAll({ where: { vendor_id:vendor_id,expense_to_vendor:expense_to_vendor} });
+        }
+        else if(req.params.type=='vendor'){
+            employee_id=0;
+            var expense_payment = await Expense.findAll({ where: { vendor_id:vendor_id,employee_id:employee_id} });
+        }
+         
         const alldatewise = [];
         await Promise.all(expense_payment.map(async (obj) => {
              // Split event_id to get event ids
@@ -472,7 +483,7 @@ const Getexpense=async(req,res)=>{
              const eventdata=await eventManagement.findOne({where:{is_delete:false,id:event_manage_id,vendor_id:obj.vendor_id}});
              if(eventdata){
              const cust_id=eventdata.dataValues.customer_id;
-             const customer = await Customer.findAll({ where: { id: cust_id } });
+             const customer = await Customer.findOne({ where: { id: cust_id } });
              const expense_payment = await Expense.findAll({ where: { id:obj.id }});
              // // Add a new key 'newKey' to dataValues property with the fetched events
              obj=eventdata;
