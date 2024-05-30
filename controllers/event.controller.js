@@ -504,10 +504,26 @@ const Getexpense=async(req,res)=>{
      }
 }
 
-// const getAlltotal
+ const getAlltotal=async(req,res)=>{
+    try{
+        const vendor_id=req.params.id;
+        var sumOfExpenses = await Expense.sum('amount', { where: { vendor_id: vendor_id } });
+        var sumOfpayment = await eventPayment.sum('paid_amount', { where: { vendor_id: vendor_id } });
+        if(sumOfpayment==null){sumOfpayment=0;}if(sumOfExpenses==null){sumOfExpenses=0;}
+        // console.log(sumOfExpenses);
+        const arr={
+            'sum_expense':sumOfExpenses,
+            'sum_pay':sumOfpayment,
+        }
+        res.status(httpStatus.OK).json({data:arr});
+    }catch(error){
+        console.log('error-------'+error);
+        res.send(httpStatus.INTERNAL_SERVER_ERROR).json({msg:'server error'});
+    }
+ }
 
 module.exports = {
     addEvent,addEventPkg,getAllEvent,getAllEventPackage,addEventManage,geteventofCust,
     geteventDates,getLastPayment,geteventbydate,Makepayment,getCustomerEvents,updatePaymentPdfUrl, 
-    TransferEvent,Exposing,ExposedTo,getVendorList,Getexpense
+    TransferEvent,Exposing,ExposedTo,getVendorList,Getexpense,getAlltotal
 }
