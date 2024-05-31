@@ -37,5 +37,5 @@ eventRouter.get('/getVendorList/:id',eventController.getVendorList);
 
 eventRouter.get('/Getexpense/:id/:type',eventController.Getexpense);
 
-eventRouter.get('/getAlltotal/:id',eventController.getAlltotal);
+eventRouter.post('/getAlltotal/:id',eventController.getAlltotal);
 module.exports=eventRouter;

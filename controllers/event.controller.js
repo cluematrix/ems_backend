@@ -10,7 +10,7 @@ const {  eventPayment } = require('../models');
 const {  transferEvent } = require('../models');
 const {  Expense } = require('../models');
 const {  employee } = require('../models');
-
+const { Op } = require('sequelize');
 const addEvent = async(req,res)=>{ 
     try{
         const Event=new Events(req.body);
@@ -507,12 +507,27 @@ const Getexpense=async(req,res)=>{
 
  const getAlltotal=async(req,res)=>{
     try{
+        console.log(req.body)
         const vendor_id=req.params.id;
-        var sumOfExpenses = await Expense.sum('amount', { where: { vendor_id: vendor_id } });
-        var sumOfpayment = await eventPayment.sum('paid_amount', { where: { vendor_id: vendor_id } });
+        const startDate = req.body.from_date; const toDate = req.body.to_date;
+        const startDates = req.body.from_date+' 00:00:00'; const toDates = req.body.to_date+' 23:59:59';;
+        var sumOfExpenses = await Expense.sum('amount', { where: { vendor_id: vendor_id,
+            createdAt: {
+                [Op.between]: [startDates, toDates]
+              }
+        } });
+        var sumOfpayment = await eventPayment.sum('paid_amount', { where: { vendor_id: vendor_id ,
+            paid_date: {
+                [Op.between]: [startDate, toDate]
+              }
+        } });
         if(sumOfpayment==null){sumOfpayment=0;}if(sumOfExpenses==null){sumOfExpenses=0;}
         // console.log(sumOfExpenses);
-        const getpay  = await eventPayment.findAll( { where: { vendor_id: vendor_id } });
+        const getpay  = await eventPayment.findAll( { where: { vendor_id: vendor_id ,
+            paid_date: {
+                [Op.between]: [startDate, toDate]
+              }
+         } });
         const alldatewise = [];
         await Promise.all(getpay.map(async (obj) => {
             const event_manage_id=obj.event_manage_id;   
@@ -525,7 +540,11 @@ const Getexpense=async(req,res)=>{
                 alldatewise.push(obj);
              }
         }));
-        const getexp  = await Expense.findAll( { where: { vendor_id: vendor_id } });
+        const getexp  = await Expense.findAll( { where: { vendor_id: vendor_id , 
+            createdAt: {
+                [Op.between]: [startDates, toDates]
+              }
+        } });
         const alldatewises = [];
         await Promise.all(getexp.map(async (objs) => {
             const event_manage_id=objs.event_manage_id;   
