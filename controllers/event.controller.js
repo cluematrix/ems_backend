@@ -472,7 +472,7 @@ const Getexpense=async(req,res)=>{
             var expense_payment = await Expense.findAll({ where: { vendor_id:vendor_id,expense_to_vendor:expense_to_vendor} });
         }
         else if(req.params.type=='vendor'){
-            employee_id=0;
+          const employee_id=0;
             var expense_payment = await Expense.findAll({ where: { vendor_id:vendor_id,employee_id:employee_id} });
         }
          
@@ -484,12 +484,8 @@ const Getexpense=async(req,res)=>{
              const eventdata=await eventManagement.findOne({where:{is_delete:false,id:event_manage_id,vendor_id:obj.vendor_id}});
              if(eventdata){
              const cust_id=eventdata.dataValues.customer_id;
-             const customer = await Customer.findOne({ where: { id: cust_id } });
-             const expense_payment = await Expense.findAll({ where: { id:obj.id }});
-             // // Add a new key 'newKey' to dataValues property with the fetched events
-             obj=eventdata;
-             obj.dataValues.customerdata = customer;
-             obj.dataValues.expense_payment = expense_payment;
+             const customer = await Vendor.findOne({ where: { id: obj.expense_to_vendor } });
+             obj.dataValues.vendor = customer;
              alldatewise.push(obj);
          }
          }));
