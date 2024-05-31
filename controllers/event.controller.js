@@ -511,9 +511,13 @@ const Getexpense=async(req,res)=>{
         var sumOfpayment = await eventPayment.sum('paid_amount', { where: { vendor_id: vendor_id } });
         if(sumOfpayment==null){sumOfpayment=0;}if(sumOfExpenses==null){sumOfExpenses=0;}
         // console.log(sumOfExpenses);
+        const getpay  = await eventPayment.findAll( { where: { vendor_id: vendor_id } });
+        const getexp  = await Expense.findAll( { where: { vendor_id: vendor_id } });
         const arr={
             'sum_expense':sumOfExpenses,
             'sum_pay':sumOfpayment,
+            'get_pay':getpay,
+            'get_expense':getexp
         }
         res.status(httpStatus.OK).json({data:arr});
     }catch(error){
