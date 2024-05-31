@@ -9,6 +9,7 @@ const {  eventManagement } = require('../models');
 const {  eventPayment } = require('../models');
 const {  transferEvent } = require('../models');
 const {  Expense } = require('../models');
+const {  employee } = require('../models');
 
 const addEvent = async(req,res)=>{ 
     try{
@@ -512,12 +513,34 @@ const Getexpense=async(req,res)=>{
         if(sumOfpayment==null){sumOfpayment=0;}if(sumOfExpenses==null){sumOfExpenses=0;}
         // console.log(sumOfExpenses);
         const getpay  = await eventPayment.findAll( { where: { vendor_id: vendor_id } });
+        const alldatewise = [];
+        await Promise.all(getpay.map(async (obj) => {
+            const event_manage_id=obj.event_manage_id;   
+             // Fetch events for each event id
+             const eventdata=await eventManagement.findOne({where:{is_delete:false,id:event_manage_id,vendor_id:vendor_id}});
+             if(eventdata){
+                const cust_id=eventdata.dataValues.customer_id;
+                const customer = await Customer.findOne({ where: { id: cust_id } });
+                obj.dataValues.customerdata = customer;
+                alldatewise.push(obj);
+             }
+        }));
         const getexp  = await Expense.findAll( { where: { vendor_id: vendor_id } });
+        const alldatewises = [];
+        await Promise.all(getexp.map(async (objs) => {
+            const event_manage_id=objs.event_manage_id;   
+            var vendor = await Vendor.findOne({ where: { id: objs.expense_to_vendor } });
+                var emp = await employee.findOne({ where: { id: objs.employee_id } });
+                if(emp==null){emp={}};if(vendor==null){vendor={}};
+                objs.dataValues.vendor = vendor;
+                objs.dataValues.employee = emp;  
+                alldatewises.push(objs);  
+        }));
         const arr={
             'sum_expense':sumOfExpenses,
             'sum_pay':sumOfpayment,
-            'get_pay':getpay,
-            'get_expense':getexp
+            'get_pay':alldatewise,
+            'get_expense':alldatewises
         }
         res.status(httpStatus.OK).json({data:arr});
     }catch(error){
