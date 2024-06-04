@@ -20,7 +20,13 @@ app.use(cors(corsOptions));
 // app.use(bodyParser.json());
  
 
-app.use(express.json());
+
+// console.log(1)
+// setTimeout(console.log(2), 100);
+// setTimeout(console.log(3), 0);
+// console.log(4);
+
+app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', routes);
