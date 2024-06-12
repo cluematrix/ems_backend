@@ -62,6 +62,10 @@ const employee = sequelize.define('employees',{
         type:String,
         required:true
     },
+    adhar_no:{
+        type:String,
+        required:true
+    },
     branch_name:{
         type:String,
         required:true
