@@ -465,8 +465,6 @@ const getVendorList=async(req,res)=>{
 const Getexpense=async(req,res)=>{
      try{
        var vendor_id=req.params.id;
-       console.log(vendor_id);
-       console.log(req.params.type);
         if(req.params.type=='emp'){
             const expense_to_vendor=0;
             var expense_payment = await Expense.findAll({ where: { vendor_id:vendor_id,expense_to_vendor:expense_to_vendor} });
@@ -475,19 +473,33 @@ const Getexpense=async(req,res)=>{
           const employee_id=0;
             var expense_payment = await Expense.findAll({ where: { vendor_id:vendor_id,employee_id:employee_id} });
         }
-         
+        
         const alldatewise = [];
         await Promise.all(expense_payment.map(async (obj) => {
              // Split event_id to get event ids
+           
              const event_manage_id=obj.event_manage_id;
+       
+            
              // Fetch events for each event id
+             if(event_manage_id!='0'){
+              
              const eventdata=await eventManagement.findOne({where:{is_delete:false,id:event_manage_id,vendor_id:obj.vendor_id}});
              if(eventdata){
              const cust_id=eventdata.dataValues.customer_id;
              const customer = await Vendor.findOne({ where: { id: obj.expense_to_vendor } });
              obj.dataValues.vendor = customer;
+             obj.dataValues.employee={};
              alldatewise.push(obj);
-         }
+            }
+          }
+          if(event_manage_id=='0'){
+           
+            obj.dataValues.vendor = {};
+            const employeev = await employee.findOne({ where: { id: obj.employee_id } });
+            obj.dataValues.employee = employeev;
+            alldatewise.push(obj);
+          }
          }));
          if(alldatewise.length!=0){
             res.status(httpStatus.OK).json({data:alldatewise});
