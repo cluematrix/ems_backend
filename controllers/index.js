@@ -6,3 +6,4 @@ module.exports.eventController = require("./event.controller");
 module.exports.loginController = require("./login.controller");
 module.exports.customerController = require("./customer.controller");
 module.exports.expenseController = require("./expense.controller");
+module.exports.employeeController = require("./employee.controller"); 

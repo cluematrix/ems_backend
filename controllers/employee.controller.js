@@ -14,6 +14,19 @@ const AddEmployee = async(req,res)=>{
 }
 
 
+const getEmployee=async(req,res)=>{
+    try{
+       const vendor_id=req.params.id;
+       const evnt=await employee.findAll({where:{is_delete:false,vendor_id:vendor_id}});
+       res.status(httpStatus.OK).json({data:evnt})
+    }
+    catch(error){
+      console.error('Error saving event pkg data:', error);
+      res.status(httpStatus.INTERNAL_SERVER_ERROR).json({mesg:'server error'});
+    }
+  }
+
+
 module.exports = {
-    AddEmployee
+    AddEmployee,getEmployee
 }

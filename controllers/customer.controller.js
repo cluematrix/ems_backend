@@ -8,8 +8,8 @@ const {  eventManagement } = require('../models');
 
 const getCustomer=async(req,res)=>{
   try{
-     const vendor_id=2;
-     const evnt=await Customer.findAll({where:{is_delete:false}});
+     const vendor_id=req.params.id;
+     const evnt=await Customer.findAll({where:{is_delete:false,vendor_id:vendor_id}});
      res.status(httpStatus.OK).json({data:evnt})
   }
   catch(error){

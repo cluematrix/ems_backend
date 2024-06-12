@@ -10,7 +10,11 @@ const employee = sequelize.define('employees',{
         type:String,
         required:true
     },
-    adhar_no:{
+    dob:{
+        type:String,
+        required:true
+    },
+    anniversary_date:{
         type:Number,
         required:true
     },
