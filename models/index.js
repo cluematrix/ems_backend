@@ -15,3 +15,4 @@ module.exports.Expense = require("./expense.model");
 module.exports.eventPayment = require("./eventPayment.model");
 module.exports.employee = require("./employee.model");
 module.exports.transferEvent = require("./transferEvent.model");
+module.exports.Gallery = require("./gallery.model");

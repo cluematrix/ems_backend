@@ -7,3 +7,4 @@ module.exports.loginController = require("./login.controller");
 module.exports.customerController = require("./customer.controller");
 module.exports.expenseController = require("./expense.controller");
 module.exports.employeeController = require("./employee.controller"); 
+module.exports.galleryController = require("./gallery.controller"); 

@@ -1,0 +1,29 @@
+const httpStatus = require("http-status");
+require("dotenv").config();
+const {  Gallery } = require('../models');
+
+const addGallery = async(req,res)=>{ 
+    try{ 
+         req.body.is_active=1;
+        req.body.image_one = req.files['image_one'] ? req.files['image_one'][0].filename : null;
+        req.body.image_two = req.files['image_two'] ? req.files['image_two'][0].filename : null;
+        req.body.image_three = req.files['image_three'] ? req.files['image_three'][0].filename : null;
+        req.body.image_four = req.files['image_four'] ? req.files['image_four'][0].filename : null;
+        req.body.image_five = req.files['image_five'] ? req.files['image_five'][0].filename : null;
+        req.body.image_six = req.files['image_six'] ? req.files['image_four'][0].filename : null;
+        req.body.image_seven = req.files['image_seven'] ? req.files['image_five'][0].filename : null;
+        console.log(req.body);
+         const vendor=new Gallery(req.body);
+         await vendor.save();
+         res.status(httpStatus.CREATED).json({msg:'Vendor Added Successfully',vendor:req.body});
+    }
+    catch(error){
+        console.error('Error saving vendor data:', error);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ msg: 'Server error' });
+    }
+}
+
+
+module.exports = {
+    addGallery
+}
