@@ -15,7 +15,7 @@ const addGallery = async(req,res)=>{
         console.log(req.body);
          const vendor=new Gallery(req.body);
          await vendor.save();
-         res.status(httpStatus.CREATED).json({msg:'Vendor Added Successfully',vendor:req.body});
+         res.status(httpStatus.CREATED).json({msg:'Gallery Added Successfully',vendor:req.body});
     }
     catch(error){
         console.error('Error saving vendor data:', error);
@@ -23,7 +23,16 @@ const addGallery = async(req,res)=>{
     }
 }
 
+const GetGallery = async(req,res)=>{
+    try{
+        const spkg= await Gallery.findAll({where:{is_delete:false,vendor_id:req.params.id}});
+        res.status(httpStatus.OK).json({msg:'Gallery Fetch Successfully',vendor:spkg});
+    }catch(error){
+        console.error('Error saving vendor data:', error);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ msg: 'Server error' });
+    }
+}
 
 module.exports = {
-    addGallery
+    addGallery , GetGallery
 }

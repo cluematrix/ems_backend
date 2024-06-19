@@ -44,6 +44,6 @@ const uploadFields = upload.fields([
 ]);
 
 GalleryRouter.post('/',uploadFields,galleryController.addGallery);
-// GalleryRouter.get('/',vendorController.getVendor);
+GalleryRouter.get('/:id',galleryController.GetGallery);
 
 module.exports=GalleryRouter;
