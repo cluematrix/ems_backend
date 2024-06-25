@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         // Generate a unique filename using the current timestamp and original name
-        const uniqueSuffix = Date.now() + '-' + Math.floor(Math.random());
+        const uniqueSuffix = Date.now() + '-' + Math.floor(Math.random() * (9999999 - 1000 + 1) + 1000);
         const extension = path.extname(file.originalname);
         cb(null, `${uniqueSuffix}${extension}`);
     }
@@ -32,18 +32,9 @@ const upload = multer({
     fileFilter: imageFilter
 });
 
-// Define the fields for multiple image uploads
-const uploadFields = upload.fields([
-    { name: 'image_one', maxCount: 1 },
-    { name: 'image_two', maxCount: 1 },
-    { name: 'image_three', maxCount: 1 },
-    { name: 'image_four', maxCount: 1 },
-    { name: 'image_five', maxCount: 1 },
-    { name: 'image_six', maxCount: 1 },
-    { name: 'image_seven', maxCount: 1 }
-]);
+const uploadArray = upload.array('images', 7);
 
-GalleryRouter.post('/',uploadFields,galleryController.addGallery);
+GalleryRouter.post('/',uploadArray,galleryController.addGallery);
 GalleryRouter.get('/:id',galleryController.GetGallery);
 
 module.exports=GalleryRouter;

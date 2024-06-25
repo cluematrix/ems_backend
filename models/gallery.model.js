@@ -10,45 +10,9 @@ const Gallery = sequelize.define('gallerys',{
         type:String,
         required:true
     },
-    description:{
+    images:{
        type:String,
        required:true
-    },
-    image_one:{
-        type:String,
-        required:true
-     },
-     image_two:{
-        type:String,
-        required:true
-     },
-     image_three:{
-        type:Number,
-        required:true
-    },
-    image_four:{
-        type:String,
-        required:true
-    },
-    image_five:{
-        type:String,
-        required:true
-    },
-    image_six:{
-        type:String,
-        required:true
-    },
-    image_seven:{
-        type:String,
-        required:true
-    },
-    video_one:{
-        type:String,
-        required:true
-    },
-    video_two:{
-        type:String,
-        required:true
     },
     is_active:{
         type:boolean,
