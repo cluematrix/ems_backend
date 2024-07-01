@@ -109,6 +109,7 @@ const addEventManage=async(req,res)=>{
    }));
   
    eventpay.event_manage_id=event_manage_id;
+   eventpay.vendor_id=req.body.vendor_id; 
    eventpay.amount=req.body.amount;
    eventpay.discount=req.body.discount;
    eventpay.final_amount=req.body.final_amount;
