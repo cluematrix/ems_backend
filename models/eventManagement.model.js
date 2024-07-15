@@ -1,0 +1,54 @@
+const { boolean } = require('joi');
+const sequelize = require('./config');
+
+const eventManagement = sequelize.define('event_managements',{
+    vendor_id:{
+        type:Number,
+        required:true
+      },
+      event_pkg_id:{
+        type:Number,
+        required:true
+      },
+      customer_id:{
+        type:Number,
+        required:true
+      },
+      description:{
+        type:String,
+        required:true
+      },
+      amount:{
+        type:String,
+        required:true
+      },
+      discount:{
+        type:String,
+        required:true
+      },
+      final_amount:{
+        type:String,
+        required:true
+      },
+      advance_amount:{
+        type:String,
+        required:true
+      },
+      remaining_amount:{
+        type:String,
+        required:true
+      },
+      event_address:{
+        type:String,
+        required:true
+      },
+       is_active:{
+        type:Number,
+        required:true
+      },
+      is_delete:{
+        type:Number,
+        required:true
+      },
+});
+module.exports=eventManagement;
